@@ -130,9 +130,82 @@ class MinimaxAgent(MultiAgentSearchAgent):
             Returns the total number of agents in the game
         """
         
-        "[Project 3] YOUR CODE HERE"        
+        "[Project 3] YOUR CODE HERE"    
+
+        "Objective"
+        # Get the optimal decision path using Minimax
+        "Agents"
+        # MAX: Pacman
+        # MIN: Ghosts (3 in total)
+        "Scoring opportunities"
+        # Food
+        "Choose best option"
+        # default evaluation function uses gamestate score
+
+        # 1. get set of legal action
+        # 2. get max
+        # 3. get min
+        # 4. get min
+        # 5. repeat steps 2-4 until depth is met
+
+        # search till depth of 4 for the best possible path
+        count = 0
+        return self.algorithm(gameState, count, 'Start')[1]
         
         util.raiseNotDefined()
+
+    def algorithm(self, gameState, count, action='Start'):
+      # INPUT: current gameState
+      # INPUT: current depth
+      # INPUT: action taken
+      # OUTPUT: tuple of score and action
+
+      "IMPORTANT: use number of occurrences of MAX as depth"
+      "not your typical tree depth..."
+
+      numAgents = gameState.getNumAgents()
+      prevAgentIndex = (count-1)%numAgents
+      agentIndex = (count)%numAgents
+
+      "State"
+      if action == 'Start':
+        currentGameState = gameState
+      else:
+        currentGameState = gameState.generateSuccessor(prevAgentIndex, action)
+
+      "Terminal"
+      if count/numAgents == self.depth:
+        return (currentGameState.getScore(), action)
+
+      "Branching"
+      legalMoves = currentGameState.getLegalActions(agentIndex)
+      # containers for results
+      scores = []
+      actions = []
+      # Get results
+      # print legalMoves
+      for option in legalMoves:
+        result = self.algorithm(currentGameState, count+1, option)
+        scores.append(result[0])
+        actions.append(result[1])
+      "End of Road: The game ended"
+      if len(legalMoves) == 0:
+        return (currentGameState.getScore(), action)
+      "Max/Min condition"
+      if agentIndex == 0:
+        # DO MAX
+        bestScore = max(scores)
+      else:
+        # DO MIN
+        bestScore = min(scores)
+      bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
+      chosenIndex = random.choice(bestIndices) # Pick randomly among the best
+      # return a tuple of the optimal decision action and the associated score
+      # return (scores[chosenIndex], actions[chosenIndex] + (action))
+      if action == 'Start':
+        return (scores[chosenIndex], actions[chosenIndex])
+      else:
+        return (scores[chosenIndex], action)
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """

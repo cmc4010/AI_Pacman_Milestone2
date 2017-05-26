@@ -23,6 +23,8 @@ Multi-Agent Pacman:
 
 ### P3-1 Reflex Agent
 
+> pacman.py -p ReflexAgent -l openClassic
+
 > autograder.py -q q1 --no-graphics
 
 Simple evaluation : eval(state, action) = ...
@@ -51,7 +53,7 @@ Must use
 > autograder.py -q q5 --no-graphics
 
 Better evaluation : eval(state) = ...
-Describe your featuers in the comments.
+Describe your features in the comments.
 
 ## Options
 
